@@ -2048,6 +2048,9 @@ void Options::addLibrary(const FileInfo& info)
 			// if dylib is specified again but weak, record that it should be weak
 			if ( info.options.fWeakImport )
 				fit->options.fWeakImport = true;
+			// if dylib is specified again but dynamic_lookup, record that it should be dynamic_lookup
+			if ( info.options.fDynamicLookupImport )
+				fit->options.fDynamicLookupImport = true;
 			return;
 		}
 	}
@@ -2469,6 +2472,14 @@ void Options::parse(int argc, const char* argv[])
 				info.ordinal = ld::File::Ordinal::makeArgOrdinal((uint16_t)i);
 				addLibrary(info);
 			}
+			else if ( strncmp(arg, "-dynamic_lookup-l", 7) == 0 ) {
+                // SNAPSHOT FIXME: what should we do for link snapshots? (ignore for now)
+                snapshotArgCount = 0;
+				FileInfo info = findLibrary(&arg[7]);
+				info.options.fDynamicLookupImport = true;
+				info.ordinal = ld::File::Ordinal::makeArgOrdinal((uint16_t)i);
+				addLibrary(info);
+			}
 			// Avoid lazy binding.
 			else if ( strcmp(arg, "-bind_at_load") == 0 ) {
 				fBindAtLoad = true;
@@ -2681,6 +2692,15 @@ void Options::parse(int argc, const char* argv[])
 				fUsingLazyDylibLinking = true;
 				cannotBeUsedWithBitcode(arg);
 			}
+			else if ( strcmp(arg, "-dynamic_lookup_library") == 0 ) {
+                // SNAPSHOT FIXME: what should we do for link snapshots? (ignore for now)
+                snapshotArgCount = 0;
+				FileInfo info = findFile(argv[++i]);
+				info.options.fDynamicLookupImport = true;
+				info.ordinal = ld::File::Ordinal::makeArgOrdinal((uint16_t)i);
+				addLibrary(info);
+				cannotBeUsedWithBitcode(arg);
+			}
 			else if ( strcmp(arg, "-framework") == 0 ) {
                 snapshotArgCount = 0;
 				FileInfo info = findFramework(argv[++i]);
@@ -2704,6 +2724,14 @@ void Options::parse(int argc, const char* argv[])
 				addLibrary(info);
 				fUsingLazyDylibLinking = true;
 				cannotBeUsedWithBitcode(arg);
+			}
+			else if ( strcmp(arg, "-dynamic_lookup_framework") == 0 ) {
+                // SNAPSHOT FIXME: what should we do for link snapshots? (ignore for now)
+                snapshotArgCount = 0;
+				FileInfo info = findFramework(argv[++i]);
+				info.options.fDynamicLookupImport = true;
+				info.ordinal = ld::File::Ordinal::makeArgOrdinal((uint16_t)i);
+				addLibrary(info);
 			}
 			else if ( strcmp(arg, "-search_paths_first") == 0 ) {
 				// previously handled by buildSearchPaths()

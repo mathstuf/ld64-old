@@ -250,8 +250,8 @@ namespace dylib {
 												: ld::File(pth, modTime, ord, Dylib), _dylibInstallPath(NULL), _frameworkName(NULL),
 												_dylibTimeStamp(0), _dylibCurrentVersion(0), _dylibCompatibilityVersion(0),
 												_explicitlyLinked(false), _implicitlyLinked(false), _speculativelyLoaded(false),
-												_lazyLoadedDylib(false), _forcedWeakLinked(false), _reExported(false),
-												_upward(false), _dead(false) { }
+												_lazyLoadedDylib(false), _forcedWeakLinked(false), _forceDynamicLookupLinked(false),
+												_reExported(false), _upward(false), _dead(false) { }
 				const char*					installPath() const			{ return _dylibInstallPath; }
 				const char*					frameworkName() const		{ return _frameworkName; }
 				uint32_t					timestamp() const			{ return _dylibTimeStamp; }
@@ -269,6 +269,8 @@ namespace dylib {
 				bool						willBeLazyLoadedDylib() const	{ return _lazyLoadedDylib; }
 				void						setForcedWeakLinked()			{ _forcedWeakLinked = true; }
 				bool						forcedWeakLinked() const		{ return _forcedWeakLinked; }
+				void						setForcedDynamicLookupLinked()		{ _forcedDynamicLookupLinked = true; }
+				bool						forcedDynamicLookupLinked() const	{ return _forcedDynamicLookupLinked; }
 															
 				void						setWillBeReExported()			{ _reExported = true; }
 				bool						willBeReExported() const		{ return _reExported; }
@@ -301,6 +303,7 @@ namespace dylib {
 		bool								_speculativelyLoaded;
 		bool								_lazyLoadedDylib;
 		bool								_forcedWeakLinked;
+		bool								_forcedDynamicLookupLinked;
 		bool								_reExported;
 		bool								_upward;
 		bool								_dead;

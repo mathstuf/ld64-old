@@ -47,7 +47,7 @@ class LibraryOptions
 public:
 	LibraryOptions() : fWeakImport(false), fReExport(false), fBundleLoader(false), 
 						fLazyLoad(false), fUpward(false), fIndirectDylib(false), 
-						fForceLoad(false) {}
+						fDynamicLookupImport(false), fForceLoad(false) {}
 	// for dynamic libraries
 	bool		fWeakImport;
 	bool		fReExport;
@@ -55,6 +55,7 @@ public:
 	bool		fLazyLoad;
 	bool		fUpward;
 	bool		fIndirectDylib;
+	bool		fDynamicLookupImport;
 	// for static libraries
 	bool		fForceLoad;
 };

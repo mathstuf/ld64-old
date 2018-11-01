@@ -138,6 +138,13 @@ That is, the library is allowed to be missing at runtime.
 .It Fl weak_library Ar path_to_library
 This is the same as listing a file name path to a library on the link line except that it forces the
 library and all references to it to be marked as weak imports.
+.It Fl dynamic_lookup-l Ns Ar x
+This is the same as the -lx but forces all symbols provided by the library to be marked as dynamic_lookup.
+That is, the library is allowed to be missing at runtime, but the symbols provided by this library must
+be available at runtime.
+.It Fl dynamic_lookup_library Ar path_to_library
+This is the same as listing a file name path to a library on the link line except that it forces all symbols
+provided by the library to be marked as dynamic_lookup.
 .It Fl reexport-l Ns Ar x
 This is the same as the -lx but specifies that the all symbols in library x should be available to
 clients linking to the library being created.  This was previously done with a separate -sub_library option.
@@ -188,6 +195,9 @@ If the optional suffix is specified the framework is first searched for the name
 .It Fl weak_framework Ar name[,suffix]
 This is the same as the -framework name[,suffix] but forces the framework and all
 references to it to be marked as weak imports.
+.It Fl dynamic_lookup_framework Ar name[,suffix]
+This is the same as the -framework name[,suffix] but forces all symbols provided by the framework
+to be marked as dynamic_lookup.
 .It Fl reexport_framework Ar name[,suffix]
 This is the same as the -framework name[,suffix] but also specifies that the
 all symbols in that framework should be available to clients linking to the library being created.

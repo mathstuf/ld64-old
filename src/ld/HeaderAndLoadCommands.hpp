@@ -1348,7 +1348,9 @@ uint8_t* HeaderAndLoadCommandsAtom<A>::copyDylibLoadCommand(uint8_t* p, const ld
 {
 	uint32_t sz = alignedSize(sizeof(macho_dylib_command<P>) + strlen(dylib->installPath()) + 1);
 	macho_dylib_command<P>* cmd = (macho_dylib_command<P>*)p;
-	if ( dylib->willBeLazyLoadedDylib() )
+	if ( dylib->forcedDynamicLookupLinked() )
+		return p;
+	else if ( dylib->willBeLazyLoadedDylib() )
 		cmd->set_cmd(LC_LAZY_LOAD_DYLIB);
 	else if ( dylib->forcedWeakLinked() || dylib->allSymbolsAreWeakImported() )
 		cmd->set_cmd(LC_LOAD_WEAK_DYLIB);
